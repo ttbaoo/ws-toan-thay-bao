@@ -1,0 +1,45 @@
+# ===========================
+# Apache Configuration cho AZDIGI
+# ===========================
+
+# Force UTF-8 encoding
+AddDefaultCharset UTF-8
+
+# Chặn truy cập trực tiếp vào thư mục config
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^config/ - [F,L]
+</IfModule>
+
+# Chặn truy cập file nhạy cảm (.sql, .log, .env)
+<FilesMatch "\.(sql|log|env)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+</FilesMatch>
+
+# Chặn directory listing
+Options -Indexes
+
+# Cache tĩnh - tối ưu tốc độ
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType application/x-javascript "access plus 1 week"
+</IfModule>
+
+# Nén Gzip - tối ưu tốc độ
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json
+</IfModule>
+
+# Bảo mật headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>

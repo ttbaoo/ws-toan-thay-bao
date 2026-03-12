@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Đăng ký tài khoản luyện thi trực tuyến tại Lớp Học Thầy Tài.">
+    <title>Đăng Ký - Lớp Học Thầy Tài</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">🎓</span>
+            LHTT
+        </a>
+
+        <nav class="nav" id="nav">
+            <a href="index.html">Trang Chủ</a>
+            <a href="#">Khóa Học</a>
+            <a href="luyen-de.html">Luyện Đề</a>
+            <a href="#">Tài Liệu</a>
+            <a href="#">Liên Hệ</a>
+        </nav>
+
+        <div class="auth-buttons">
+            <a href="dang-nhap.html" class="btn-login">Đăng Nhập</a>
+            <a href="dang-ky.html" class="btn-register">Đăng Ký</a>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- AUTH PAGE -->
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-illustration">
+                <img src="images/register-illustration.png" alt="Đăng ký">
+                <h2>Gia nhập lớp học!</h2>
+            </div>
+
+            <div class="auth-form-container">
+                <h1 class="auth-form-title">Đăng Ký</h1>
+                <p class="auth-form-subtitle">Tạo tài khoản để bắt đầu hành trình chinh phục kỳ thi</p>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="fullname">Họ và tên</label>
+                        <div class="form-input-wrapper">
+                            <input type="text" id="fullname" class="form-input" placeholder="Nhập họ và tên..."
+                                required>
+                            <span class="input-icon">👤</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <div class="form-input-wrapper">
+                            <input type="tel" id="phone" class="form-input" placeholder="Nhập số điện thoại..."
+                                required>
+                            <span class="input-icon">📱</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Mật khẩu</label>
+                        <div class="form-input-wrapper">
+                            <input type="password" id="password" class="form-input" placeholder="Nhập mật khẩu..."
+                                required>
+                            <span class="input-icon">🔒</span>
+                            <button type="button" class="toggle-password" data-target="password">👁</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Nhập lại mật khẩu</label>
+                        <div class="form-input-wrapper">
+                            <input type="password" id="confirmPassword" class="form-input"
+                                placeholder="Nhập lại mật khẩu..." required>
+                            <span class="input-icon">🔒</span>
+                            <button type="button" class="toggle-password" data-target="confirmPassword">👁</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Đăng Ký</button>
+                </form>
+
+                <div class="auth-switch">
+                    Đã có tài khoản? <a href="dang-nhap.html">Đăng nhập ngay</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
