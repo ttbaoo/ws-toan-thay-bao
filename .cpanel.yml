@@ -1,5 +1,5 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/arwoccxa/.softaculous/demo.toanthaybao.com
+    - export DEPLOYPATH=/home/arwoccxa/demo.toanthaybao.com
     - /bin/mkdir -p "$DEPLOYPATH"
     - /usr/bin/rsync -av --delete --exclude='.git' --exclude='.cpanel.yml' ./ "$DEPLOYPATH"/
