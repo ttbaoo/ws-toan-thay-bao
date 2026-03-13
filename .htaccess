@@ -8,6 +8,8 @@ AddDefaultCharset UTF-8
 # Chặn truy cập trực tiếp vào thư mục config
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    # Fallback rõ ràng cho trang chủ nếu server không tự nhận index
+    RewriteRule ^$ index.html [L]
     RewriteRule ^config/ - [F,L]
 </IfModule>
 
