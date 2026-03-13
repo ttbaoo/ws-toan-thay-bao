@@ -1,7 +1,7 @@
 # ===========================
 # Apache Configuration cho AZDIGI
 # ===========================
-
+DirectoryIndex index.html index.php
 # Force UTF-8 encoding
 AddDefaultCharset UTF-8
 
