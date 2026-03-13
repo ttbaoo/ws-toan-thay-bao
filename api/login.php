@@ -29,7 +29,11 @@ if (empty($phone) || empty($password)) {
 }
 
 // Tìm user
-$stmt = $pdo->prepare('SELECT id, fullname, phone, password FROM users WHERE phone = ?');
+$stmt = $pdo->prepare(
+    'SELECT id, fullname, date_of_birth, phone, avatar_url, class_name, role, user_tier, password
+     FROM users
+     WHERE phone = ?'
+);
 $stmt->execute([$phone]);
 $user = $stmt->fetch();
 
@@ -42,7 +46,12 @@ if (!$user || !password_verify($password, $user['password'])) {
 // Lưu session
 $_SESSION['user_id'] = $user['id'];
 $_SESSION['user_fullname'] = $user['fullname'];
+$_SESSION['user_date_of_birth'] = $user['date_of_birth'];
 $_SESSION['user_phone'] = $user['phone'];
+$_SESSION['user_avatar_url'] = $user['avatar_url'];
+$_SESSION['user_class_name'] = $user['class_name'];
+$_SESSION['user_role'] = $user['role'];
+$_SESSION['user_tier'] = $user['user_tier'];
 
 echo json_encode([
     'success' => true,
@@ -50,6 +59,11 @@ echo json_encode([
     'user' => [
         'id' => (int)$user['id'],
         'fullname' => $user['fullname'],
-        'phone' => $user['phone']
+        'dateOfBirth' => $user['date_of_birth'],
+        'phone' => $user['phone'],
+        'avatarUrl' => $user['avatar_url'],
+        'className' => $user['class_name'],
+        'role' => $user['role'],
+        'userTier' => $user['user_tier']
     ]
 ]);

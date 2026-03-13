@@ -42,8 +42,11 @@ async function checkAuth() {
     if (!authButtons) return;
 
     if (data.loggedIn && data.user) {
+      const roleLabel = data.user.role === 'admin' ? 'Admin' : 'Học sinh';
+      const tierLabel = data.user.userTier === 'premium' ? 'Premium' : 'Thường';
+
       authButtons.innerHTML = `
-        <span class="user-greeting">Xin chào, <strong>${data.user.fullname}</strong></span>
+        <span class="user-greeting">Xin chào, <strong>${data.user.fullname}</strong> (${roleLabel} - ${tierLabel})</span>
         <button class="btn-logout" id="btnLogout">Đăng Xuất</button>
       `;
 
@@ -284,10 +287,33 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const fullname = document.getElementById('fullname').value.trim();
       const phone = document.getElementById('phone').value.trim();
+      const dateOfBirth = document.getElementById('dateOfBirth').value;
+      const className = document.getElementById('className').value;
+      const avatarUrl = document.getElementById('avatarUrl').value.trim();
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
       const submitBtn = registerForm.querySelector('.btn-submit');
       const originalText = submitBtn.textContent;
+
+      if (!/^0[0-9]{9}$/.test(phone)) {
+        showToast('Số điện thoại không hợp lệ (10 chữ số, bắt đầu bằng 0).', 'error');
+        return;
+      }
+
+      if (!dateOfBirth) {
+        showToast('Vui lòng nhập ngày sinh.', 'error');
+        return;
+      }
+
+      if (!/^(10|11|12)A([1-9]|1[0-5])$/.test(className)) {
+        showToast('Vui lòng chọn lớp hợp lệ.', 'error');
+        return;
+      }
+
+      if (!avatarUrl) {
+        showToast('Vui lòng nhập đường dẫn ảnh đại diện.', 'error');
+        return;
+      }
 
       // Client-side validation
       if (password !== confirmPassword) {
@@ -308,7 +334,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch('api/register.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fullname, phone, password, confirmPassword })
+          body: JSON.stringify({
+            fullname,
+            dateOfBirth,
+            phone,
+            avatarUrl,
+            className,
+            password,
+            confirmPassword
+          })
         });
         
         const data = await res.json();

@@ -1,7 +1,7 @@
 <?php
 /**
  * API Đăng Ký tài khoản
- * POST: fullname, phone, password, confirmPassword
+ * POST: fullname, dateOfBirth, phone, avatarUrl, className, password, confirmPassword
  */
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../config/database.php';
@@ -19,7 +19,10 @@ if (!$input) {
 }
 
 $fullname = trim($input['fullname'] ?? '');
+$dateOfBirth = trim($input['dateOfBirth'] ?? '');
 $phone = trim($input['phone'] ?? '');
+$avatarUrl = trim($input['avatarUrl'] ?? '');
+$className = trim($input['className'] ?? '');
 $password = $input['password'] ?? '';
 $confirmPassword = $input['confirmPassword'] ?? '';
 
@@ -33,10 +36,34 @@ if (mb_strlen($fullname) > 255) {
     $errors[] = 'Họ và tên tối đa 255 ký tự.';
 }
 
+if (empty($dateOfBirth)) {
+    $errors[] = 'Vui lòng nhập ngày sinh.';
+} else {
+    $dob = DateTime::createFromFormat('Y-m-d', $dateOfBirth);
+    $validDob = $dob && $dob->format('Y-m-d') === $dateOfBirth;
+    if (!$validDob) {
+        $errors[] = 'Ngày sinh không hợp lệ.';
+    } elseif ($dateOfBirth > date('Y-m-d')) {
+        $errors[] = 'Ngày sinh không được lớn hơn ngày hiện tại.';
+    }
+}
+
 if (empty($phone)) {
     $errors[] = 'Vui lòng nhập số điện thoại.';
 } elseif (!preg_match('/^0[0-9]{9}$/', $phone)) {
     $errors[] = 'Số điện thoại không hợp lệ (10 chữ số, bắt đầu bằng 0).';
+}
+
+if (empty($avatarUrl)) {
+    $errors[] = 'Vui lòng nhập đường dẫn ảnh đại diện.';
+} elseif (mb_strlen($avatarUrl) > 500) {
+    $errors[] = 'Đường dẫn ảnh đại diện tối đa 500 ký tự.';
+}
+
+if (empty($className)) {
+    $errors[] = 'Vui lòng chọn lớp.';
+} elseif (!preg_match('/^(10|11|12)A([1-9]|1[0-5])$/', $className)) {
+    $errors[] = 'Lớp không hợp lệ. Vui lòng chọn lớp từ danh sách.';
 }
 
 if (empty($password)) {
@@ -66,14 +93,22 @@ if ($stmt->fetch()) {
 
 // Tạo tài khoản
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-$stmt = $pdo->prepare('INSERT INTO users (fullname, phone, password) VALUES (?, ?, ?)');
-$stmt->execute([$fullname, $phone, $hashedPassword]);
+$stmt = $pdo->prepare(
+    'INSERT INTO users (fullname, date_of_birth, phone, avatar_url, class_name, role, user_tier, password)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+);
+$stmt->execute([$fullname, $dateOfBirth, $phone, $avatarUrl, $className, 'user', 'normal', $hashedPassword]);
 
 // Auto login sau khi đăng ký
 $userId = $pdo->lastInsertId();
 $_SESSION['user_id'] = $userId;
 $_SESSION['user_fullname'] = $fullname;
+$_SESSION['user_date_of_birth'] = $dateOfBirth;
 $_SESSION['user_phone'] = $phone;
+$_SESSION['user_avatar_url'] = $avatarUrl;
+$_SESSION['user_class_name'] = $className;
+$_SESSION['user_role'] = 'user';
+$_SESSION['user_tier'] = 'normal';
 
 echo json_encode([
     'success' => true,
@@ -81,6 +116,11 @@ echo json_encode([
     'user' => [
         'id' => (int)$userId,
         'fullname' => $fullname,
-        'phone' => $phone
+        'dateOfBirth' => $dateOfBirth,
+        'phone' => $phone,
+        'avatarUrl' => $avatarUrl,
+        'className' => $className,
+        'role' => 'user',
+        'userTier' => 'normal'
     ]
 ]);
