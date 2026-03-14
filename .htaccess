@@ -1,47 +1,86 @@
 # ===========================
-# Apache Configuration cho AZDIGI
+# AZDIGI - Production .htaccess
 # ===========================
+
 DirectoryIndex index.html index.php
-# Force UTF-8 encoding
+Options -Indexes
 AddDefaultCharset UTF-8
 
-# Chặn truy cập trực tiếp vào thư mục config
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    # Fallback rõ ràng cho trang chủ nếu server không tự nhận index
+
+    # Force HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Root fallback
     RewriteRule ^$ index.html [L]
-    RewriteRule ^config/ - [F,L]
+
+    # Block direct access to config folder
+    RewriteRule ^config/ - [F,L,NC]
+
+    # Block hidden/system files except .well-known
+    RewriteRule (^|/)\.(?!well-known/) - [F,L,NC]
 </IfModule>
 
-# Chặn truy cập file nhạy cảm (.sql, .log, .env)
-<FilesMatch "\.(sql|log|env)$">
+# Block sensitive file extensions
+<FilesMatch "\.(sql|log|env|ini|bak|dist|example)$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
 </FilesMatch>
 
-# Chặn directory listing
-Options -Indexes
+# Block sensitive file names
+<FilesMatch "^(composer\.(json|lock)|package-lock\.json|yarn\.lock|README(\.md)?|\.cpanel\.yml)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
 
-# Cache tĩnh - tối ưu tốc độ
+# MIME types
+<IfModule mod_mime.c>
+    AddType text/css .css
+    AddType application/javascript .js
+    AddType application/json .json
+</IfModule>
+
+# Cache static assets
 <IfModule mod_expires.c>
     ExpiresActive On
-    ExpiresByType image/png "access plus 1 month"
     ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
     ExpiresByType image/webp "access plus 1 month"
-    ExpiresByType text/css "access plus 1 week"
-    ExpiresByType application/javascript "access plus 1 week"
-    ExpiresByType application/x-javascript "access plus 1 week"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType text/css "access plus 7 days"
+    ExpiresByType application/javascript "access plus 7 days"
+    ExpiresByType font/woff2 "access plus 1 month"
+    ExpiresByType font/woff "access plus 1 month"
 </IfModule>
 
-# Nén Gzip - tối ưu tốc độ
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json
-</IfModule>
-
-# Bảo mật headers
 <IfModule mod_headers.c>
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set X-XSS-Protection "1; mode=block"
+    <FilesMatch "\.(css|js|png|jpg|jpeg|webp|svg|woff|woff2)$">
+        Header set Cache-Control "public, max-age=604800, immutable"
+    </FilesMatch>
+
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/javascript application/javascript application/json image/svg+xml
 </IfModule>
