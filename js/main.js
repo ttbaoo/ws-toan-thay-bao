@@ -187,10 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (input) {
         if (input.type === 'password') {
           input.type = 'text';
-          btn.textContent = '🙈';
+          btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>';
         } else {
           input.type = 'password';
-          btn.textContent = '👁';
+          btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
         }
       }
     });
@@ -402,35 +402,76 @@ document.addEventListener('DOMContentLoaded', () => {
   if (header) {
     window.addEventListener('scroll', () => {
       if (window.scrollY > 20) {
-        header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+        header.classList.add('scrolled');
       } else {
-        header.style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)';
+        header.classList.remove('scrolled');
       }
     });
   }
+
+  // ===========================
+  // ANIMATED STATS COUNTER
+  // ===========================
+  const statNumbers = document.querySelectorAll('.stat-number');
+
+  if (statNumbers.length > 0) {
+    const animateCounter = (el) => {
+      const target = parseInt(el.dataset.target);
+      const duration = 2000;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(target * eased);
+
+        el.textContent = current.toLocaleString() + (el.closest('.stat-card').querySelector('.stat-label').textContent.includes('%') ? '%' : '+');
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
+    };
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const numbers = entry.target.querySelectorAll('.stat-number');
+          numbers.forEach((num, i) => {
+            setTimeout(() => animateCounter(num), i * 150);
+          });
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+      statsObserver.observe(statsSection);
+    }
+  }
   
   // ===========================
-  // ENTRANCE ANIMATIONS
+  // SCROLL REVEAL ANIMATIONS
   // ===========================
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
+  const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
+        entry.target.classList.add('visible');
       }
     });
-  }, observerOptions);
-  
-  // Animate feature cards
-  document.querySelectorAll('.feature-card, .exam-card').forEach((card, index) => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = `all 0.5s ease ${index * 0.1}s`;
-    observer.observe(card);
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach((el, index) => {
+    el.style.transitionDelay = `${(index % 3) * 0.1}s`;
+    revealObserver.observe(el);
   });
 });
