@@ -10,11 +10,11 @@
 }
 
 :root {
-  --primary: #4F46E5;
-  --primary-light: #818CF8;
-  --primary-dark: #3730A3;
-  --primary-gradient: linear-gradient(135deg, #4F46E5, #7C3AED);
-  --primary-gradient-hover: linear-gradient(135deg, #4338CA, #6D28D9);
+  --primary: #002E4D;
+  --primary-light: #004B7C;
+  --primary-dark: #00192B;
+  --primary-gradient: linear-gradient(135deg, #002E4D, #004B7C);
+  --primary-gradient-hover: linear-gradient(135deg, #00192B, #00385C);
   --cta: #22C55E;
   --cta-dark: #16A34A;
   --bg-main: #F8FAFF;
