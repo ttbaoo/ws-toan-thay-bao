@@ -51,6 +51,20 @@ async function checkAuth() {
       `;
 
       document.getElementById('btnLogout').addEventListener('click', handleLogout);
+
+      // Add "Tạo Đề Thi" nav link for admin
+      if (data.user.role === 'admin') {
+        const nav = document.getElementById('nav');
+        if (nav && !nav.querySelector('a[href="tao-de-thi.html"]')) {
+          const link = document.createElement('a');
+          link.href = 'tao-de-thi.html';
+          link.textContent = 'Tạo Đề Thi';
+          if (window.location.pathname.includes('tao-de-thi')) {
+            link.classList.add('active');
+          }
+          nav.appendChild(link);
+        }
+      }
     }
   } catch (e) {
     // Nếu không kết nối được API (chạy local không có PHP), giữ nguyên giao diện
