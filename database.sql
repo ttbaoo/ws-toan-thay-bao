@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     '11A1','11A2','11A3','11A4','11A5','11A6','11A7','11A8','11A9','11A10','11A11','11A12','11A13','11A14','11A15',
     '12A1','12A2','12A3','12A4','12A5','12A6','12A7','12A8','12A9','12A10','12A11','12A12','12A13','12A14','12A15'
   ) NULL,
-  `role` ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+  `role` ENUM('admin', 'teacher', 'user') NOT NULL DEFAULT 'user',
   `user_tier` ENUM('normal', 'premium') NOT NULL DEFAULT 'normal',
   `password` VARCHAR(255) NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -38,7 +38,7 @@ ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `class_name` ENUM(
   '11A1','11A2','11A3','11A4','11A5','11A6','11A7','11A8','11A9','11A10','11A11','11A12','11A13','11A14','11A15',
   '12A1','12A2','12A3','12A4','12A5','12A6','12A7','12A8','12A9','12A10','12A11','12A12','12A13','12A14','12A15'
 ) NULL AFTER `avatar_url`;
-ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `role` ENUM('admin', 'user') NOT NULL DEFAULT 'user' AFTER `class_name`;
+ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `role` ENUM('admin', 'teacher', 'user') NOT NULL DEFAULT 'user' AFTER `class_name`;
 ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `user_tier` ENUM('normal', 'premium') NOT NULL DEFAULT 'normal' AFTER `role`;
 ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER `created_at`;
 

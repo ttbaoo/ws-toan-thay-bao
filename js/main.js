@@ -42,7 +42,8 @@ async function checkAuth() {
     if (!authButtons) return;
 
     if (data.loggedIn && data.user) {
-      const roleLabel = data.user.role === 'admin' ? 'Admin' : 'Học sinh';
+      const roleLabels = { admin: 'Admin', teacher: 'Giáo viên', user: 'Học sinh' };
+      const roleLabel = roleLabels[data.user.role] || 'Học sinh';
       const tierLabel = data.user.userTier === 'premium' ? 'Premium' : 'Thường';
 
       authButtons.innerHTML = `
@@ -52,8 +53,8 @@ async function checkAuth() {
 
       document.getElementById('btnLogout').addEventListener('click', handleLogout);
 
-      // Add "Tạo Đề Thi" nav link for admin
-      if (data.user.role === 'admin') {
+      // Add "Tạo Đề Thi" nav link for admin/teacher
+      if (data.user.role === 'admin' || data.user.role === 'teacher') {
         const nav = document.getElementById('nav');
         if (nav && !nav.querySelector('a[href="tao-de-thi.html"]')) {
           const link = document.createElement('a');

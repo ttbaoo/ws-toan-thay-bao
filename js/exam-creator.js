@@ -36,8 +36,9 @@
     try {
       const res = await fetch('api/check-auth.php');
       const data = await res.json();
-      if (!data.loggedIn || data.user?.role !== 'admin') {
-        showToast('Bạn cần đăng nhập với tài khoản Admin để truy cập trang này.', 'error');
+      const role = data.user?.role;
+      if (!data.loggedIn || (role !== 'admin' && role !== 'teacher')) {
+        showToast('Bạn cần đăng nhập với tài khoản Giáo viên để truy cập trang này.', 'error');
         setTimeout(() => window.location.href = 'dang-nhap.html', 1500);
         return false;
       }

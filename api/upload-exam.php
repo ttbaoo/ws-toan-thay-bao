@@ -9,8 +9,9 @@ header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/tex-parser.php';
 
-// Auth check: admin only
-if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] ?? '') !== 'admin') {
+// Auth check: admin or teacher only
+$userRole = $_SESSION['user_role'] ?? '';
+if (!isset($_SESSION['user_id']) || !in_array($userRole, ['admin', 'teacher'])) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Bạn không có quyền truy cập chức năng này.']);
     exit;
