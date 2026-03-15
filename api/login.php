@@ -1,7 +1,7 @@
 <?php
 /**
  * API Đăng Nhập
- * POST: phone, password
+ * POST: identifier, password
  */
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../config/database.php';
@@ -18,34 +18,36 @@ if (!$input) {
     $input = $_POST;
 }
 
-$phone = trim($input['phone'] ?? '');
+$identifier = trim($input['identifier'] ?? ($input['phone'] ?? ''));
 $password = $input['password'] ?? '';
 
 // Validate
-if (empty($phone) || empty($password)) {
+if (empty($identifier) || empty($password)) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Vui lòng nhập số điện thoại và mật khẩu.']);
+    echo json_encode(['success' => false, 'message' => 'Vui lòng nhập username hoặc số điện thoại và mật khẩu.']);
     exit;
 }
 
 // Tìm user
 $stmt = $pdo->prepare(
-    'SELECT id, fullname, date_of_birth, phone, avatar_url, class_name, role, user_tier, password
+    'SELECT id, fullname, username, date_of_birth, phone, avatar_url, class_name, role, user_tier, password
      FROM users
-     WHERE phone = ?'
+     WHERE username = ? OR phone = ?
+     LIMIT 1'
 );
-$stmt->execute([$phone]);
+$stmt->execute([$identifier, $identifier]);
 $user = $stmt->fetch();
 
 if (!$user || !password_verify($password, $user['password'])) {
     http_response_code(401);
-    echo json_encode(['success' => false, 'message' => 'Số điện thoại hoặc mật khẩu không đúng.']);
+    echo json_encode(['success' => false, 'message' => 'Username/số điện thoại hoặc mật khẩu không đúng.']);
     exit;
 }
 
 // Lưu session
 $_SESSION['user_id'] = $user['id'];
 $_SESSION['user_fullname'] = $user['fullname'];
+$_SESSION['user_username'] = $user['username'];
 $_SESSION['user_date_of_birth'] = $user['date_of_birth'];
 $_SESSION['user_phone'] = $user['phone'];
 $_SESSION['user_avatar_url'] = $user['avatar_url'];
@@ -59,6 +61,7 @@ echo json_encode([
     'user' => [
         'id' => (int)$user['id'],
         'fullname' => $user['fullname'],
+        'username' => $user['username'],
         'dateOfBirth' => $user['date_of_birth'],
         'phone' => $user['phone'],
         'avatarUrl' => !empty($user['avatar_url']) ? $user['avatar_url'] : 'https://ui-avatars.com/api/?name=' . urlencode($user['fullname']) . '&background=random&color=fff&size=128',

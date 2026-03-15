@@ -1,14 +1,14 @@
 <?php
 /**
  * API Lấy danh sách đề thi
- * GET: Trả về danh sách đề thi của teacher đang đăng nhập
+ * GET: Trả về danh sách đề thi của admin đang đăng nhập
  */
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../config/database.php';
 
-// Auth check: admin or teacher only
+// Auth check: admin only
 $userRole = $_SESSION['user_role'] ?? '';
-if (!isset($_SESSION['user_id']) || !in_array($userRole, ['admin', 'teacher'])) {
+if (!isset($_SESSION['user_id']) || $userRole !== 'admin') {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Bạn không có quyền truy cập.']);
     exit;

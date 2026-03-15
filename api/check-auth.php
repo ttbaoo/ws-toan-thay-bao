@@ -12,6 +12,7 @@ if (isset($_SESSION['user_id'])) {
         'user' => [
             'id' => (int)$_SESSION['user_id'],
             'fullname' => $_SESSION['user_fullname'] ?? null,
+            'username' => $_SESSION['user_username'] ?? null,
             'dateOfBirth' => $_SESSION['user_date_of_birth'] ?? null,
             'phone' => $_SESSION['user_phone'] ?? null,
             'avatarUrl' => !empty($_SESSION['user_avatar_url']) ? $_SESSION['user_avatar_url'] : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['user_fullname'] ?? 'User') . '&background=random&color=fff&size=128',

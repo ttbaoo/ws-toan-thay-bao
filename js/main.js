@@ -42,7 +42,7 @@ async function checkAuth() {
     if (!authButtons) return;
 
     if (data.loggedIn && data.user) {
-      const roleLabels = { admin: 'Admin', teacher: 'Giáo viên', user: 'Học sinh' };
+      const roleLabels = { admin: 'Quản trị viên', user: 'Học sinh' };
       const roleLabel = roleLabels[data.user.role] || 'Học sinh';
       const tierLabel = data.user.userTier === 'premium' ? 'Premium' : 'Thường';
 
@@ -56,8 +56,8 @@ async function checkAuth() {
 
       document.getElementById('btnLogout').addEventListener('click', handleLogout);
 
-      // Add "Tạo Đề Thi" nav link for admin/teacher
-      if (data.user.role === 'admin' || data.user.role === 'teacher') {
+      // Add "Tạo Đề Thi" nav link for admin
+      if (data.user.role === 'admin') {
         const nav = document.getElementById('nav');
         if (nav && !nav.querySelector('a[href="tao-de-thi.html"]')) {
           const link = document.createElement('a');
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const phone = document.getElementById('phone').value.trim();
+      const identifier = document.getElementById('identifier').value.trim();
       const password = document.getElementById('password').value;
       const submitBtn = loginForm.querySelector('.btn-submit');
       const originalText = submitBtn.textContent;
@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch('api/login.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone, password })
+          body: JSON.stringify({ identifier, password })
         });
         
         const data = await res.json();
@@ -304,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       
       const fullname = document.getElementById('fullname').value.trim();
+      const username = document.getElementById('username').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const dateOfBirth = document.getElementById('dateOfBirth').value;
 
@@ -312,7 +313,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const submitBtn = registerForm.querySelector('.btn-submit');
       const originalText = submitBtn.textContent;
 
-      if (!/^0[0-9]{9}$/.test(phone)) {
+      if (!/^[a-zA-Z0-9_]{4,30}$/.test(username)) {
+        showToast('Username chỉ gồm chữ cái, số, dấu gạch dưới và dài 4-30 ký tự.', 'error');
+        return;
+      }
+
+      if (phone && !/^0[0-9]{9}$/.test(phone)) {
         showToast('Số điện thoại không hợp lệ (10 chữ số, bắt đầu bằng 0).', 'error');
         return;
       }
@@ -345,6 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             fullname,
+            username,
             dateOfBirth,
             phone,
             password,
