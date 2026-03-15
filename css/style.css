@@ -2164,24 +2164,26 @@ input, select {
   gap: 16px;
 }
 
-.form-group {
+.exam-meta-form .form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-bottom: 0;
 }
 
-.form-group label {
+.exam-meta-form .form-group label {
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-dark);
+  margin-bottom: 0;
 }
 
-.form-group .required {
+.exam-meta-form .form-group .required {
   color: #DC2626;
 }
 
-.form-group input,
-.form-group select {
+.exam-meta-form .form-group input,
+.exam-meta-form .form-group select {
   padding: 10px 14px;
   border: 1.5px solid rgba(79, 70, 229, 0.15);
   border-radius: var(--radius);
@@ -2191,8 +2193,8 @@ input, select {
   transition: var(--transition);
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.exam-meta-form .form-group input:focus,
+.exam-meta-form .form-group select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
