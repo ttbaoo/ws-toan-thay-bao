@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Thông tin tài khoản - Thầy Bảo">
+  <title>Tài Khoản - Thầy Bảo</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .account-container {
+      max-width: 800px;
+      margin: 120px auto 60px;
+      padding: 0 20px;
+    }
+    .account-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+    }
+    .account-header {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 40px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .account-avatar-wrapper {
+      position: relative;
+    }
+    .account-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--primary-color);
+    }
+    .btn-edit-avatar {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+      transition: all 0.3s ease;
+    }
+    .btn-edit-avatar:hover {
+      transform: scale(1.1);
+      background: var(--primary-hover);
+    }
+    .account-info h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+    .account-role {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary-color);
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .info-item {
+      background: var(--bg-color);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+    .info-label {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .info-value {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    
+    #avatarUploadForm {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: var(--bg-color);
+      border-radius: 12px;
+      border: 1px dashed var(--primary-color);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 4 3 6 3s6-1 6-3v-5"/></svg>
+      </span>
+      Thầy Bảo
+    </a>
+    
+    <nav class="nav" id="nav">
+      <a href="index.html">Trang Chủ</a>
+      <a href="#">Khóa Học</a>
+      <a href="luyen-de.html">Luyện Đề</a>
+      <a href="#">Tài Liệu</a>
+      <a href="#">Liên Hệ</a>
+    </nav>
+    
+    <div class="auth-buttons">
+      <!-- Injected via checkAuth() -->
+    </div>
+    
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <main class="account-container">
+    <div class="account-card">
+      <div class="account-header">
+        <div class="account-avatar-wrapper">
+          <img src="https://ui-avatars.com/api/?name=User&background=random" alt="Avatar" id="accountAvatar" class="account-avatar">
+          <button class="btn-edit-avatar" id="btnEditAvatar" title="Cập nhật ảnh đại diện">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+          </button>
+        </div>
+        <div class="account-info">
+          <h1 id="accountName">Đang tải...</h1>
+          <span class="account-role" id="accountRole">...</span>
+        </div>
+      </div>
+      
+      <form id="avatarUploadForm">
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="avatarFile">Chọn ảnh đại diện mới (Tối đa 5MB, JPG/PNG):</label>
+          <input type="file" id="avatarFile" accept="image/png, image/jpeg, image/gif, image/webp" class="form-input" required>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn-submit" id="btnUpload" style="padding: 10px 20px;">Tải Lên</button>
+          <button type="button" class="btn-secondary" id="btnCancelUpload" style="padding: 10px 20px; background: transparent; border: 1px solid var(--border-color); color: var(--text-color); border-radius: 8px; cursor: pointer;">Hủy</button>
+        </div>
+      </form>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Số điện thoại</div>
+          <div class="info-value" id="accountPhone">...</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Ngày sinh</div>
+          <div class="info-value" id="accountDob">...</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Lớp</div>
+          <div class="info-value" id="accountClass">...</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Gói tài khoản</div>
+          <div class="info-value" id="accountTier">...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-bottom">
+      © 2026 Bản quyền thuộc về <strong>THẦY BẢO</strong>. Thiết kế tối ưu cho trải nghiệm học tập.
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Fetch user data directly to populate the page
+      try {
+        const res = await fetch('api/check-auth.php');
+        const data = await res.json();
+        
+        if (!data.loggedIn) {
+          window.location.href = 'dang-nhap.html';
+          return;
+        }
+        
+        const user = data.user;
+        document.getElementById('accountName').textContent = user.fullname;
+        document.getElementById('accountAvatar').src = user.avatarUrl;
+        
+        const roleLabels = { admin: 'Quản trị viên', teacher: 'Giáo viên', user: 'Học sinh' };
+        document.getElementById('accountRole').textContent = roleLabels[user.role] || 'Học sinh';
+        
+        document.getElementById('accountPhone').textContent = user.phone;
+        
+        // Format date
+        if (user.dateOfBirth) {
+            const parts = user.dateOfBirth.split('-');
+            if (parts.length === 3) {
+                document.getElementById('accountDob').textContent = `${parts[2]}/${parts[1]}/${parts[0]}`;
+            } else {
+                document.getElementById('accountDob').textContent = user.dateOfBirth;
+            }
+        } else {
+            document.getElementById('accountDob').textContent = 'Chưa cập nhật';
+        }
+        
+        document.getElementById('accountClass').textContent = user.className || 'Chưa cập nhật';
+        document.getElementById('accountTier').textContent = user.userTier === 'premium' ? 'Premium (Gói trả phí)' : 'Thường (Miễn phí)';
+        
+      } catch (err) {
+        console.error('Lỗi khi tải thông tin:', err);
+      }
+      
+      // Avatar upload logic
+      const btnEditAvatar = document.getElementById('btnEditAvatar');
+      const avatarUploadForm = document.getElementById('avatarUploadForm');
+      const btnCancelUpload = document.getElementById('btnCancelUpload');
+      
+      btnEditAvatar.addEventListener('click', () => {
+        avatarUploadForm.style.display = 'block';
+      });
+      
+      btnCancelUpload.addEventListener('click', () => {
+        avatarUploadForm.style.display = 'none';
+        avatarUploadForm.reset();
+      });
+      
+      avatarUploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById('avatarFile');
+        if (!fileInput.files.length) return;
+        
+        const btnUpload = document.getElementById('btnUpload');
+        const originalText = btnUpload.textContent;
+        btnUpload.disabled = true;
+        btnUpload.textContent = 'Đang tải lên...';
+        
+        const formData = new FormData();
+        formData.append('avatar', fileInput.files[0]);
+        
+        try {
+          const response = await fetch('api/upload-avatar.php', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const result = await response.json();
+          if (result.success) {
+            showToast(result.message, 'success');
+            // Update avatar image in page instantly
+            document.getElementById('accountAvatar').src = result.avatarUrl;
+            // Also update the navbar avatar
+            const navAvatar = document.querySelector('.auth-buttons .user-greeting img');
+            if (navAvatar) {
+              navAvatar.src = result.avatarUrl;
+            }
+            // Hide form
+            avatarUploadForm.style.display = 'none';
+            avatarUploadForm.reset();
+          } else {
+            showToast(result.message || 'Lỗi tải ảnh', 'error');
+          }
+        } catch (error) {
+          showToast('Lỗi kết nối máy chủ', 'error');
+        } finally {
+          btnUpload.disabled = false;
+          btnUpload.textContent = originalText;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -61,7 +61,7 @@ echo json_encode([
         'fullname' => $user['fullname'],
         'dateOfBirth' => $user['date_of_birth'],
         'phone' => $user['phone'],
-        'avatarUrl' => $user['avatar_url'],
+        'avatarUrl' => !empty($user['avatar_url']) ? $user['avatar_url'] : 'https://ui-avatars.com/api/?name=' . urlencode($user['fullname']) . '&background=random&color=fff&size=128',
         'className' => $user['class_name'],
         'role' => $user['role'],
         'userTier' => $user['user_tier']

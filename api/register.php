@@ -21,8 +21,9 @@ if (!$input) {
 $fullname = trim($input['fullname'] ?? '');
 $dateOfBirth = trim($input['dateOfBirth'] ?? '');
 $phone = trim($input['phone'] ?? '');
-$avatarUrl = trim($input['avatarUrl'] ?? '');
 $className = trim($input['className'] ?? '');
+
+$avatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode($fullname) . '&background=random&color=fff&size=128';
 $password = $input['password'] ?? '';
 $confirmPassword = $input['confirmPassword'] ?? '';
 
@@ -52,12 +53,6 @@ if (empty($phone)) {
     $errors[] = 'Vui lòng nhập số điện thoại.';
 } elseif (!preg_match('/^0[0-9]{9}$/', $phone)) {
     $errors[] = 'Số điện thoại không hợp lệ (10 chữ số, bắt đầu bằng 0).';
-}
-
-if (empty($avatarUrl)) {
-    $errors[] = 'Vui lòng nhập đường dẫn ảnh đại diện.';
-} elseif (mb_strlen($avatarUrl) > 500) {
-    $errors[] = 'Đường dẫn ảnh đại diện tối đa 500 ký tự.';
 }
 
 if (empty($className)) {

@@ -47,7 +47,10 @@ async function checkAuth() {
       const tierLabel = data.user.userTier === 'premium' ? 'Premium' : 'Thường';
 
       authButtons.innerHTML = `
-        <span class="user-greeting">Xin chào, <strong>${data.user.fullname}</strong> (${roleLabel} - ${tierLabel})</span>
+        <a href="tai-khoan.html" class="user-greeting" style="text-decoration: none; display: flex; align-items: center; gap: 8px;">
+          <img src="${data.user.avatarUrl}" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+          <span>Xin chào, <strong>${data.user.fullname}</strong> (${roleLabel} - ${tierLabel})</span>
+        </a>
         <button class="btn-logout" id="btnLogout">Đăng Xuất</button>
       `;
 
@@ -304,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const phone = document.getElementById('phone').value.trim();
       const dateOfBirth = document.getElementById('dateOfBirth').value;
       const className = document.getElementById('className').value;
-      const avatarUrl = document.getElementById('avatarUrl').value.trim();
+
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
       const submitBtn = registerForm.querySelector('.btn-submit');
@@ -325,10 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      if (!avatarUrl) {
-        showToast('Vui lòng nhập đường dẫn ảnh đại diện.', 'error');
-        return;
-      }
+
 
       // Client-side validation
       if (password !== confirmPassword) {
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fullname,
             dateOfBirth,
             phone,
-            avatarUrl,
+
             className,
             password,
             confirmPassword
