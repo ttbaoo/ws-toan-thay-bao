@@ -15,23 +15,31 @@ $fullname = 'Teacher Bao';
 $role = 'teacher';
 
 try {
-    // Check if already exists
-    $stmt = $pdo->prepare('SELECT id FROM users WHERE phone = ?');
-    $stmt->execute([$phone]);
-
-    if ($stmt->fetch()) {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Tài khoản teacher đã tồn tại (phone: ' . $phone . ')'
-        ]);
-        exit;
-    }
-
     // First, ensure the ENUM supports 'teacher'
     $pdo->exec("ALTER TABLE `users` MODIFY COLUMN `role` ENUM('admin', 'teacher', 'user') NOT NULL DEFAULT 'user'");
 
     // Hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Check if already exists
+    $stmt = $pdo->prepare('SELECT id FROM users WHERE phone = ?');
+    $stmt->execute([$phone]);
+
+    if ($stmt->fetch()) {
+        $updateStmt = $pdo->prepare('UPDATE users SET password = ?, role = ? WHERE phone = ?');
+        $updateStmt->execute([$hashedPassword, $role, $phone]);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Tài khoản teacher đã tồn tại, mật khẩu và quyền đã được reset/cập nhật thành công.',
+            'data' => [
+                'phone' => $phone,
+                'password' => $password,
+                'role' => $role
+            ]
+        ]);
+        exit;
+    }
 
     // Insert teacher account
     $stmt = $pdo->prepare(
