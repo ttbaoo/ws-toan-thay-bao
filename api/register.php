@@ -21,7 +21,7 @@ if (!$input) {
 $fullname = trim($input['fullname'] ?? '');
 $dateOfBirth = trim($input['dateOfBirth'] ?? '');
 $phone = trim($input['phone'] ?? '');
-$className = trim($input['className'] ?? '');
+$className = null;
 
 $avatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode($fullname) . '&background=random&color=fff&size=128';
 $password = $input['password'] ?? '';
@@ -55,11 +55,7 @@ if (empty($phone)) {
     $errors[] = 'Số điện thoại không hợp lệ (10 chữ số, bắt đầu bằng 0).';
 }
 
-if (empty($className)) {
-    $errors[] = 'Vui lòng chọn lớp.';
-} elseif (!preg_match('/^(10|11|12)A([1-9]|1[0-5])$/', $className)) {
-    $errors[] = 'Lớp không hợp lệ. Vui lòng chọn lớp từ danh sách.';
-}
+
 
 if (empty($password)) {
     $errors[] = 'Vui lòng nhập mật khẩu.';

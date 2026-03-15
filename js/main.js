@@ -306,7 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const fullname = document.getElementById('fullname').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const dateOfBirth = document.getElementById('dateOfBirth').value;
-      const className = document.getElementById('className').value;
 
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
@@ -320,11 +319,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!dateOfBirth) {
         showToast('Vui lòng nhập ngày sinh.', 'error');
-        return;
-      }
-
-      if (!/^(10|11|12)A([1-9]|1[0-5])$/.test(className)) {
-        showToast('Vui lòng chọn lớp hợp lệ.', 'error');
         return;
       }
 
@@ -353,8 +347,6 @@ document.addEventListener('DOMContentLoaded', () => {
             fullname,
             dateOfBirth,
             phone,
-
-            className,
             password,
             confirmPassword
           })
