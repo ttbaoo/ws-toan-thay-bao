@@ -1,7 +1,7 @@
 /* ===========================
    DESIGN TOKENS & RESET
    =========================== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
 
 *, *::before, *::after {
   margin: 0;
@@ -42,7 +42,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-body);
   background: var(--bg-main);
   line-height: 1.7;
@@ -51,7 +51,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   color: var(--text-dark);
   line-height: 1.3;
 }
@@ -115,7 +115,7 @@ input, select {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-weight: 800;
   font-size: 1.25rem;
   color: var(--primary);
@@ -347,7 +347,7 @@ input, select {
   border-radius: var(--radius);
   box-shadow: 0 8px 30px rgba(79, 70, 229, 0.35);
   transition: var(--transition);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
 .btn-cta:hover {
@@ -550,7 +550,7 @@ input, select {
 }
 
 .stat-number {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 4px;
@@ -727,7 +727,7 @@ input, select {
   color: #fff;
   font-weight: 700;
   font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   flex-shrink: 0;
 }
 
@@ -817,7 +817,7 @@ input, select {
   font-size: 1rem;
   border-radius: var(--radius);
   transition: var(--transition);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   position: relative;
   z-index: 1;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -875,7 +875,7 @@ input, select {
   letter-spacing: 1.5px;
   margin-bottom: 24px;
   color: #fff;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
 .footer-contact-item {
@@ -1558,7 +1558,7 @@ input, select {
   transition: var(--transition);
   letter-spacing: 0.5px;
   box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
 .btn-submit:hover {
@@ -2246,7 +2246,7 @@ input, select {
 }
 
 .summary-total-number {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 2rem;
   font-weight: 800;
   background: var(--primary-gradient);
@@ -2356,7 +2356,7 @@ input, select {
 }
 
 .q-number {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-weight: 700;
   font-size: 0.88rem;
   color: var(--text-dark);
